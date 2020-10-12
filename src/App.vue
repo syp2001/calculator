@@ -43,31 +43,32 @@ body {
   background-color: var(--light-blue);
 }
 h1 {
-  color:white;
+  color: #e1f8ff;
   text-align:left;
   margin-left:20px;
   margin-top:0;
+  font-weight:200;
 }
 #display {
   color:white;
   text-align: center;
-  font-weight:100;
+  font-weight: 100;
 }
 #input {
 	margin: 20px auto;
 	outline: none;
 	border: none;
-	background-color: var(--blue);
-	border-radius: 3px;
+	background-color: var(--light-blue);
 	color: white;
 	padding: 5px 10px;
-	transition: box-shadow 100ms 0ms ease-in;
+	transition: box-shadow 150ms ease-in;
   font-size: 2em;
   width: 50%;
+	box-shadow: 0px 3px var(--blue);
+  
 }
 #input:focus {
 	box-shadow: 0px 5px var(--lemon);
-	background-color: var(--light-blue);
 }
 
 body:focus-within {
