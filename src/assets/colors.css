@@ -1,0 +1,15 @@
+:root{
+/* CSS HEX */
+--mauve: #b185a7ff;
+--onyx: #3f4045ff;
+--lemon: #faf0caff;
+--blue: #448fa3ff;
+--light-blue: #68c5dbff;
+
+/* CSS HSL */
+--mauve: hsla(314, 22%, 61%, 1);
+--onyx: hsla(230, 5%, 26%, 1);
+--lemon: hsla(48, 83%, 89%, 1);
+--blue: hsla(193, 41%, 45%, 1);
+--light-blue: hsla(191, 61%, 63%, 1);
+}

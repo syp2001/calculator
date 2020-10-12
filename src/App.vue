@@ -1,20 +1,25 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+    <Header />
+    <Block v-for="block in blocks" :key="block.id" :data="block"/>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import HelloWorld from './components/HelloWorld.vue';
+import Block from './components/Block.vue';
+import Header from './components/Header.vue';
 
 @Component({
   components: {
-    HelloWorld,
+    Block,
+    Header
   },
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  public blocks: object[] = [{value:0,units:'m'}];
+
+}
 </script>
 
 <style>
@@ -25,5 +30,8 @@ export default class App extends Vue {}
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+body {
+  background-color: var(--light-blue);
 }
 </style>
