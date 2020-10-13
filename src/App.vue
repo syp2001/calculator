@@ -20,7 +20,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import { evaluate } from 'mathjs';
 import Button from './components/Button.vue';
 import {constants} from './assets/constants';
-
+/* eslint-disable */
 @Component({
   components: {
     Button
@@ -117,7 +117,7 @@ body:focus-within {
   }
   100%{
     transform: translate(0,0px);
-    opacity:100%;
+    opacity:1;
   }
 }
 </style>
