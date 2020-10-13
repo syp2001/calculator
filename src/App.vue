@@ -1,11 +1,13 @@
 <template>
   <div id="app">
+    <!--hidden input for copy to clipboard-->
+    <input class='hide' id="clip" v-model="output"/>
     <h1 class="floatup">Chemistry Calculator</h1>
     <div class="container">
       <input v-model="expression" class="floatup" id="input" placeholder="type expression here"/>
       <Button @click="clear()" class="floatup clr">Clear</Button>
     </div>
-    <h1 :class="output?'':'hide'" id="display">= {{output}}</h1>
+    <h1 :class="output?'':'hide'" id="display">= {{output}}</h1><Button v-if="output" @click="copy()">Copy</Button>
     <div class="container">
     <Button v-for="constant in constants" :key="constant[0]" @click="append(constant[1])" class="floatup">
       {{constant[0]}}
@@ -27,13 +29,21 @@ import {constants} from './assets/constants';
   },
 })
 export default class App extends Vue {
-  public output: string | undefined;
-  public expression = "";
-  public constants = constants;
+  public output: string | undefined; //valuee to be output
+  public expression = ""; //user input
+  public constants = constants; //dictionary of physical constants
 
+  //copy output to clipboard
+  public copy(): void {
+    let copyText = document.querySelector("#clip") as HTMLInputElement;
+    copyText.select();
+    document.execCommand("copy");
+  }
+  //clear input
   public clear(): void{
     this.expression = "";
   }
+  //append value to input
   public append(num: string): void{
     this.expression += num;
   }
@@ -84,6 +94,8 @@ h1 {
   color:white;
   text-align: center;
   font-weight: 100;
+  display:inline;
+  margin-right: 10px;
 }
 #input {
 	margin: 20px auto;
