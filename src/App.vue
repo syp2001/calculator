@@ -19,7 +19,7 @@
 import { Component, Vue, Watch } from 'vue-property-decorator';
 import { evaluate } from 'mathjs';
 import Button from './components/Button.vue';
-import {constants} from './assets/constants.ts';
+import {constants} from './assets/constants';
 
 @Component({
   components: {
