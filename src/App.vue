@@ -2,9 +2,9 @@
   <div id="app">
     <!--hidden input for copy to clipboard-->
     <input class='hide' id="clip" v-model="output"/>
-    <h1 class="floatup">Chemistry Calculator</h1>
+    <h1 class="floatup">Scientific Calculator</h1>
     <div class="container">
-      <input v-model="expression" class="floatup" id="input" placeholder="type expression here"/>
+      <input v-model="expression" class="floatup" id="input" placeholder="type expression here" v-debounce="addHist()" ref="in" autofocus/>
       <Button @click="clear()" class="floatup clr">Clear</Button>
     </div>
     <h1 :class="output?'':'hide'" id="display">= {{output}}</h1><Button v-if="output" @click="copy()">Copy</Button>
@@ -12,7 +12,16 @@
     <Button v-for="constant in constants" :key="constant[0]" @click="append(constant[1])" class="floatup">
       {{constant[0]}}
     </Button>
-  </div>
+    </div>
+
+    <div class="container" id ="panel">
+      <div id="history" v-if="history.length">
+        <h2 id="history-header">History</h2>
+        <ul id="history-list">
+          <li v-for="item in history" :key="item.value" @click="append(item)">{{item}}</li>
+        </ul>
+      </div>
+    </div>
   </div>
  
 </template>
@@ -22,6 +31,7 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import { evaluate } from 'mathjs';
 import Button from './components/Button.vue';
 import {constants} from './assets/constants';
+import vueDebounce from 'vue-debounce';
 /* eslint-disable */
 @Component({
   components: {
@@ -29,23 +39,36 @@ import {constants} from './assets/constants';
   },
 })
 export default class App extends Vue {
-  public output: string | undefined; //valuee to be output
+  public output: string | undefined; //value to be output
   public expression = ""; //user input
   public constants = constants; //dictionary of physical constants
+  public history: string[] = []; 
 
+  // put focus on input box
+  public focusInput(): void { 
+    (this.$refs.in as HTMLInputElement).focus();
+  }
   //copy output to clipboard
   public copy(): void {
     let copyText = document.querySelector("#clip") as HTMLInputElement;
     copyText.select();
     document.execCommand("copy");
+    this.focusInput(); // return focus to input
   }
   //clear input
   public clear(): void{
-    this.expression = "";
+    this.expression = ""; // reset input string
+    this.focusInput(); // return focus to input box
   }
   //append value to input
   public append(num: string): void{
     this.expression += num;
+    this.focusInput();
+  }
+  public addHist(): void{
+    // if output is valid and nonempty and has changed since last recorded
+    if(this.output && this.output !== this.history[0] && this.output !== "invalid input")
+        this.history.unshift(this.output); // prepend output to history
   }
   @Watch('expression')
   inputChanged(newVal: string) {
@@ -68,6 +91,10 @@ export default class App extends Vue {
   color: #2c3e50;
   margin-top: 10px;
 }
+#panel {
+  display:flex;
+  justify-content: center;
+}
 .hide{
   opacity:0;
 }
@@ -77,7 +104,7 @@ body {
   text-align: center;
 }
 .container {
-  /*width: 840px;*/
+  width: 840px;
   margin: 10px auto;
 }
 h1 {
@@ -107,12 +134,38 @@ h1 {
 	transition: box-shadow 200ms ease-in;
   font-size: 2em;
   height:1.35em;
-  width: 50%;
+  width: 80%;
 	box-shadow: 0px 3px var(--blue);
   
 }
 #input:focus {
 	box-shadow: 0px 5px var(--lemon);
+}
+#history {
+  animation: fadein 500ms ease-in 0s forwards;
+  opacity: 0%;
+  margin-top: 50px;
+  border-radius: 10px;
+  background-color: rgb(98, 159, 181);
+  padding: 20px;
+  flex-basis: 30%;
+}
+#history-header {
+  text-align: center;
+  color:white;
+  font-weight: 100;
+}
+#history-list {
+  padding: 0;
+  list-style-type: none;
+  color: white;
+  font-size: 1em; 
+}
+#history-list li{
+  margin-bottom: 10px;
+}
+#history-list li:hover{
+  cursor: pointer;
 }
 
 body:focus-within {
@@ -130,6 +183,17 @@ body:focus-within {
   100%{
     transform: translate(0,0px);
     opacity:1;
+  }
+}
+@keyframes fadein {
+  0%{
+    opacity: 0%;
+  }
+  75%{
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 100%;
   }
 }
 </style>
