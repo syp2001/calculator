@@ -4,14 +4,25 @@
     <input class='hide' id="clip" v-model="output"/>
     <h1 class="floatup">Scientific Calculator</h1>
     <div class="container">
-      <input v-model="expression" class="floatup" id="input" placeholder="type expression here" v-debounce="addHist()" ref="in" autofocus/>
+
+      <input v-model="expression" 
+        class="floatup" 
+        id="input" 
+        placeholder="type expression here" 
+        @input="addHist()"
+        ref="in" 
+        autofocus/>
+
       <Button @click="clear()" class="floatup clr">Clear</Button>
     </div>
-    <h1 :class="output?'':'hide'" id="display">= {{output}}</h1><Button v-if="output" @click="copy()">Copy</Button>
+
+    <h1 :class="output?'':'hide'" id="display">= {{output}}</h1>
+    <Button v-if="output" @click="copy()">Copy</Button>
+
     <div class="container">
-    <Button v-for="constant in constants" :key="constant[0]" @click="append(constant[1])" class="floatup">
-      {{constant[0]}}
-    </Button>
+      <Button v-for="constant in constants" :key="constant[0]" @click="append(constant[1])" class="floatup">
+        {{constant[0]}}
+      </Button>
     </div>
 
     <div class="container" id ="panel">
@@ -31,18 +42,18 @@ import { Component, Vue, Watch } from 'vue-property-decorator';
 import { evaluate } from 'mathjs';
 import Button from './components/Button.vue';
 import {constants} from './assets/constants';
-import vueDebounce from 'vue-debounce';
-/* eslint-disable */
+
+/* eslint-disable */ 
 @Component({
   components: {
     Button
   },
 })
 export default class App extends Vue {
-  public output: string | undefined; //value to be output
+  public output: string =""; //value to be output
   public expression = ""; //user input
   public constants = constants; //dictionary of physical constants
-  public history: string[] = []; 
+  public history: string[] = [];
 
   // put focus on input box
   public focusInput(): void { 
@@ -65,11 +76,14 @@ export default class App extends Vue {
     this.expression += num;
     this.focusInput();
   }
+  // add output to history
   public addHist(): void{
     // if output is valid and nonempty and has changed since last recorded
     if(this.output && this.output !== this.history[0] && this.output !== "invalid input")
         this.history.unshift(this.output); // prepend output to history
   }
+
+  // automatically evaluate input
   @Watch('expression')
   inputChanged(newVal: string) {
     try{
@@ -145,7 +159,7 @@ h1 {
   animation: fadein 500ms ease-in 0s forwards;
   opacity: 0%;
   margin-top: 50px;
-  border-radius: 10px;
+  /*border-radius: 10px;*/
   background-color: rgb(98, 159, 181);
   padding: 20px;
   flex-basis: 30%;
@@ -182,7 +196,7 @@ body:focus-within {
   }
   100%{
     transform: translate(0,0px);
-    opacity:1;
+    opacity:100%;
   }
 }
 @keyframes fadein {
