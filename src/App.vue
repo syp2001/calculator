@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <!--hidden input for copy to clipboard-->
-    <input class='hide' id="clip" v-model="output"/>
+    <input class='hide' id="clip" :value="output"/>
     <h1 class="floatup">Scientific Calculator</h1>
     <div class="container">
 
@@ -9,7 +9,7 @@
         class="floatup" 
         id="input" 
         placeholder="type expression here" 
-        @input="addHist()"
+        @change="addHist()"
         ref="in" 
         autofocus/>
 
@@ -54,6 +54,7 @@ export default class App extends Vue {
   public expression = ""; //user input
   public constants = constants; //dictionary of physical constants
   public history: string[] = [];
+  public timeout: number = 0;
 
   // put focus on input box
   public focusInput(): void { 
@@ -80,7 +81,7 @@ export default class App extends Vue {
   public addHist(): void{
     // if output is valid and nonempty and has changed since last recorded
     if(this.output && this.output !== this.history[0] && this.output !== "invalid input")
-        this.history.unshift(this.output); // prepend output to history
+        this.history.unshift(this.output) // prepend output to history
   }
 
   // automatically evaluate input
