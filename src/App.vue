@@ -9,7 +9,7 @@
         class="floatup" 
         id="input" 
         placeholder="type expression here" 
-        @change="addHist()"
+        @input="debouncedHist()"
         ref="in" 
         autofocus/>
 
@@ -54,8 +54,15 @@ export default class App extends Vue {
   public expression = ""; //user input
   public constants = constants; //dictionary of physical constants
   public history: string[] = [];
-  public timeout: number = 0;
+  public debouncedHist = this.debounce(() => this.addHist(),500);
 
+  public debounce(func: Function, delay:number){
+    let timeout: number;
+    return function(){
+      clearInterval(timeout);
+      timeout = setTimeout(() => func(), delay);
+    }
+  }
   // put focus on input box
   public focusInput(): void { 
     (this.$refs.in as HTMLInputElement).focus();
@@ -80,7 +87,7 @@ export default class App extends Vue {
   // add output to history
   public addHist(): void{
     // if output is valid and nonempty and has changed since last recorded
-    if(this.output && this.output !== this.history[0] && this.output !== "invalid input")
+    if(this.output && this.output !== "invalid input" && this.output !== this.history[0])
         this.history.unshift(this.output) // prepend output to history
   }
 
