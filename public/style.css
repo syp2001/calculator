@@ -1,0 +1,94 @@
+/* define colors */
+:root{
+    /* CSS HEX */
+    --lemon: #faf0caff;
+    --blue: #448fa3;
+    --light-blue: #68c5db;
+}
+
+/* general styles */
+html {
+    font-family: Avenir, Helvetica, Arial, sans-serif;
+    color: white;
+}
+h1 {
+    font-weight: 100;
+}
+
+body {
+    background-color: var(--light-blue);
+    transition: all 500ms ease-in;
+    text-align: center;
+}
+
+/* layout */
+.container {
+    width: 900px;
+    margin: 10px auto;
+    display:flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+#header {
+    text-align: left;
+    margin-left: 10px;
+}
+#main {
+ display: flex;
+ flex-direction: column;
+ flex-basis: 65%;
+}
+#history {
+    flex-basis: 25%;
+}
+
+
+
+/*calculator panel*/
+#calculator {
+}
+#calc-input {
+    flex-basis: 80%;
+    transition: box-shadow 200ms ease-in;
+    box-shadow: 0px 3px var(--blue);
+    display: flex;
+    align-items: stretch;
+}
+#calc-input:focus-within {
+    box-shadow: 0px 5px var(--lemon);
+}
+#calc-input input {
+    outline: none;
+    border: none;
+    flex-grow: 2;
+    background-color: transparent;
+    font-size: 1.5em;
+    padding-bottom: 3px;
+    color:white;
+}
+#clear-btn {
+    border: none;
+}
+
+/* animations */
+@keyframes float {
+    0%{
+      transform:translate(0px,20px);
+      opacity:0%;
+    }
+    100%{
+      transform: translate(0,0px);
+      opacity:100%;
+    }
+  }
+  @keyframes fadein {
+    0%{
+      opacity: 0%;
+    }
+    75%{
+      transform: scale(1.1);
+    }
+    100% {
+      opacity: 100%;
+    }
+  }
