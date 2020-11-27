@@ -1,5 +1,9 @@
 const express = require('express');
 
-router = express.Router('/constants');
+const router = express.Router();
 
-router.get('/');
+router.get('/', (req,res) => {
+    res.send({hello: "world"});
+});
+
+module.exports = router;

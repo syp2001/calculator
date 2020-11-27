@@ -1,3 +1,5 @@
+let history = [];
+
 function debounce(func,delay){
     let timeout; 
     return function(...args){
