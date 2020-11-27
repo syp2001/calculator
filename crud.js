@@ -16,4 +16,4 @@ async function topConstant(){
     const { rows } = await pool.query('select * from constants order by popularity desc limit 5');
     return rows;
 }
-module.exports = { getUnit };
+module.exports = { getConstant };
